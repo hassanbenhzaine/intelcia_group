@@ -1,271 +1,252 @@
-CREATE TABLE "Admin"
-(
-	"AdminID" integer NOT NULL
+CREATE TABLE public."User" (
+    id integer NOT NULL,
+    email character varying,
+    "firstName" character varying,
+    "lastName" character varying
+);
+
+
+CREATE TABLE public."Admin" (
 )
-;
+INHERITS (public."User");
 
-CREATE TABLE "Chef"
-(
-	"ChefID" integer NOT NULL
+
+CREATE TABLE public."Employee" (
+    commission real,
+    remuneration real,
+    salary real,
+    specialization character varying,
+    "teamId" integer,
+    "divisionId" integer
 )
-;
+INHERITS (public."User");
 
-CREATE TABLE "Client"
-(
-	"Activity" varchar(50),
-	"Address" varchar(50),
-	"Fax" varchar(50),
-	"Name" varchar(50),
-	"Phone" varchar(50),
-	"ClientID" integer NOT NULL
+
+CREATE TABLE public."Chef" (
 )
-;
+INHERITS (public."Employee");
 
-CREATE TABLE "ClientAddress"
-(
-	"Address1" varchar(50),
-	"Address2" varchar(50),
-	"City" varchar(50),
-	"Country" varchar(50),
-	"State" varchar(50),
-	"ZipCode" varchar(50),
-	"ClientaddressID" integer NOT NULL,
-	"ClientID" integer
+
+CREATE TABLE public."Client" (
+    activity character varying,
+    phone character varying,
+    fax character varying,
+    name character varying,
+    "addressId" integer
 )
-;
+INHERITS (public."User");
 
-CREATE TABLE "Company"
-(
-	"SocialReason" varchar(50),
-	"CompanyID" integer NOT NULL
-)
-;
 
-CREATE TABLE "Division"
-(
-	"Address" varchar(50),
-	"Ca" varchar(50),
-	"Location" varchar(50),
-	"Name" varchar(50),
-	"DivisionID" integer NOT NULL,
-	"CompanyID" integer NOT NULL,
-	"DivisionaddressID" integer NOT NULL
-)
-;
+CREATE TABLE public."ClientAddress" (
+    id integer NOT NULL,
+    address1 character varying,
+    address2 character varying,
+    city character varying,
+    "zipCode" character varying,
+    country character varying,
+    state character varying,
+    "clientId" integer
+);
 
-CREATE TABLE "DivisionAddress"
-(
-	"Address1" varchar(50),
-	"Address2" varchar(50),
-	"City" varchar(50),
-	"Country" varchar(50),
-	"State" varchar(50),
-	"ZipCode" varchar(50),
-	"DivisionaddressID" integer NOT NULL
-)
-;
 
-CREATE TABLE "Employee"
-(
-	"Commission" real,
-	"Remuneration" real,
-	"Salary" real,
-	"Specialization" varchar(50),
-	"EmployeeID" integer NOT NULL,
-	"DivisionID" integer NOT NULL,
-	"TeamID" integer
-)
-;
+CREATE TABLE public."Company" (
+    "socialReason" character varying,
+    id integer NOT NULL
+);
 
-CREATE TABLE "EmployeeHardware"
-(
-	"HardwareID" integer,
-	"EmployeeID" integer
-)
-;
 
-CREATE TABLE "EmployeeTask"
-(
-	"End" timestamp without time zone,
-	"Start" timestamp without time zone,
-	"EmployeetaskID" integer NOT NULL,
-	"EmployeeID" integer,
-	"TaskID" integer
-)
-;
+CREATE TABLE public."Division" (
+    ca character varying,
+    location character varying,
+    name character varying,
+    id integer NOT NULL,
+    "companyId" integer,
+    "addresseId" integer
+);
 
-CREATE TABLE "Hardware"
-(
-	"ComposedOf" varchar(50),
-	"Name" varchar(50),
-	"Reference" varchar(50),
-	"Type" varchar(50),
-	"HardwareID" integer NOT NULL
-)
-;
 
-CREATE TABLE "Project"
-(
-	"Appelation" varchar(50),
-	"Completion" timestamp without time zone,
-	"Deadline" timestamp without time zone,
-	"End" timestamp without time zone,
-	"Label" varchar(50),
-	"Start" timestamp without time zone,
-	"Theme" varchar(50),
-	"ProjectID" integer NOT NULL,
-	"ChefID" integer,
-	"ClientID" integer
-)
-;
+CREATE TABLE public."DivisionAddress" (
+    address2 character varying,
+    address1 character varying,
+    city character varying,
+    country character varying,
+    state character varying,
+    "zipCode" character varying,
+    id integer NOT NULL
+);
 
-CREATE TABLE "Task"
-(
-	"Cost" real,
-	"Description" varchar(50),
-	"Name" varchar(50),
-	"TaskID" integer NOT NULL,
-	"ProjectID" integer
-)
-;
 
-CREATE TABLE "Team"
-(
-	"Competence" varchar(50),
-	"TeamID" integer NOT NULL
-)
-;
 
-CREATE TABLE "User"
-(
-	"Email" varchar(50),
-	"FirstName" varchar(50),
-	"LastName" varchar(50),
-	"Password" varchar(50),
-	"UserID" integer NOT NULL
-)
-;
+CREATE TABLE public."EmployeeHardware" (
+    "hardwareId" integer,
+    "employeeId" integer
+);
 
-ALTER TABLE "Admin" ADD CONSTRAINT "PK_Admin"
-	PRIMARY KEY ("AdminID")
-;
 
-ALTER TABLE "Chef" ADD CONSTRAINT "PK_Chef"
-	PRIMARY KEY ("ChefID")
-;
 
-ALTER TABLE "Client" ADD CONSTRAINT "PK_Client"
-	PRIMARY KEY ("ClientID")
-;
+CREATE TABLE public."EmployeeTask" (
+    start timestamp without time zone,
+    "end" timestamp without time zone,
+    "employeeId" integer,
+    "taskId" integer
+);
 
-ALTER TABLE "ClientAddress" ADD CONSTRAINT "PK_ClientAddress"
-	PRIMARY KEY ("ClientaddressID")
-;
 
-ALTER TABLE "Company" ADD CONSTRAINT "PK_Company"
-	PRIMARY KEY ("CompanyID")
-;
+CREATE TABLE public."Hardware" (
+    name character varying,
+    refererance character varying,
+    type character varying,
+    id integer NOT NULL,
+    "partOf" integer
+);
 
-ALTER TABLE "Division" ADD CONSTRAINT "PK_Division"
-	PRIMARY KEY ("DivisionID")
-;
 
-ALTER TABLE "DivisionAddress" ADD CONSTRAINT "PK_DivisionAddress"
-	PRIMARY KEY ("DivisionaddressID")
-;
 
-ALTER TABLE "Employee" ADD CONSTRAINT "PK_Employee"
-	PRIMARY KEY ("EmployeeID")
-;
+CREATE TABLE public."Project" (
+    "chefId" integer,
+    id integer NOT NULL,
+    completion timestamp without time zone,
+    deadline timestamp without time zone,
+    start timestamp without time zone,
+    "end" timestamp without time zone,
+    appelation character varying,
+    label character varying,
+    theme character varying
+);
 
-ALTER TABLE "EmployeeTask" ADD CONSTRAINT "PK_EmployeeTask"
-	PRIMARY KEY ("EmployeetaskID")
-;
 
-ALTER TABLE "Hardware" ADD CONSTRAINT "PK_Hardware"
-	PRIMARY KEY ("HardwareID")
-;
 
-ALTER TABLE "Project" ADD CONSTRAINT "PK_Project"
-	PRIMARY KEY ("ProjectID")
-;
+CREATE TABLE public."Task" (
+    cost real,
+    description character varying,
+    name character varying,
+    id integer NOT NULL,
+    "projectId" integer
+);
 
-ALTER TABLE "Task" ADD CONSTRAINT "PK_Task"
-	PRIMARY KEY ("TaskID")
-;
 
-ALTER TABLE "Team" ADD CONSTRAINT "PK_Team"
-	PRIMARY KEY ("TeamID")
-;
 
-ALTER TABLE "User" ADD CONSTRAINT "PK_User"
-	PRIMARY KEY ("UserID")
-;
+CREATE TABLE public."Team" (
+    id integer NOT NULL,
+    competence character varying
+);
 
-ALTER TABLE "Admin" ADD CONSTRAINT "FK_Admin_User"
-	FOREIGN KEY ("AdminID") REFERENCES "User" ("UserID") ON DELETE No Action ON UPDATE No Action
-;
 
-ALTER TABLE "Chef" ADD CONSTRAINT "FK_Chef_Employee"
-	FOREIGN KEY ("ChefID") REFERENCES "Employee" ("EmployeeID") ON DELETE No Action ON UPDATE No Action
-;
 
-ALTER TABLE "Client" ADD CONSTRAINT "FK_Client_User"
-	FOREIGN KEY ("ClientID") REFERENCES "User" ("UserID") ON DELETE No Action ON UPDATE No Action
-;
+ALTER TABLE ONLY public."Admin"
+    ADD CONSTRAINT "Admin_pkey" PRIMARY KEY (id);
 
-ALTER TABLE "ClientAddress" ADD CONSTRAINT "FK_ClientAddress_has a"
-	FOREIGN KEY ("ClientID") REFERENCES "Client" ("ClientID") ON DELETE No Action ON UPDATE No Action
-;
 
-ALTER TABLE "Division" ADD CONSTRAINT "FK_Division_Company"
-	FOREIGN KEY ("CompanyID") REFERENCES "Company" ("CompanyID") ON DELETE No Action ON UPDATE No Action
-;
 
-ALTER TABLE "Division" ADD CONSTRAINT "FK_Division_has a"
-	FOREIGN KEY ("DivisionaddressID") REFERENCES "DivisionAddress" ("DivisionaddressID") ON DELETE No Action ON UPDATE No Action
-;
+ALTER TABLE ONLY public."Chef"
+    ADD CONSTRAINT "Chef_pkey" PRIMARY KEY (id);
 
-ALTER TABLE "Employee" ADD CONSTRAINT "FK_Employee_work in"
-	FOREIGN KEY ("DivisionID") REFERENCES "Division" ("DivisionID") ON DELETE No Action ON UPDATE No Action
-;
 
-ALTER TABLE "Employee" ADD CONSTRAINT "FK_Employee_User"
-	FOREIGN KEY ("EmployeeID") REFERENCES "User" ("UserID") ON DELETE No Action ON UPDATE No Action
-;
 
-ALTER TABLE "Employee" ADD CONSTRAINT "FK_Employee_grouped into"
-	FOREIGN KEY ("TeamID") REFERENCES "Team" ("TeamID") ON DELETE No Action ON UPDATE No Action
-;
+ALTER TABLE ONLY public."ClientAddress"
+    ADD CONSTRAINT "ClientAddress_pkey" PRIMARY KEY (id);
 
-ALTER TABLE "EmployeeHardware" ADD CONSTRAINT "FK_EmployeeHardware_Hardware"
-	FOREIGN KEY ("HardwareID") REFERENCES "Hardware" ("HardwareID") ON DELETE No Action ON UPDATE No Action
-;
 
-ALTER TABLE "EmployeeHardware" ADD CONSTRAINT "FK_EmployeeHardware_Employee"
-	FOREIGN KEY ("EmployeeID") REFERENCES "Employee" ("EmployeeID") ON DELETE No Action ON UPDATE No Action
-;
 
-ALTER TABLE "EmployeeTask" ADD CONSTRAINT "FK_EmployeeTask_Employee"
-	FOREIGN KEY ("EmployeeID") REFERENCES "Employee" ("EmployeeID") ON DELETE No Action ON UPDATE No Action
-;
+ALTER TABLE ONLY public."Client"
+    ADD CONSTRAINT "Client_pkey" PRIMARY KEY (id);
 
-ALTER TABLE "EmployeeTask" ADD CONSTRAINT "FK_EmployeeTask_Task"
-	FOREIGN KEY ("TaskID") REFERENCES "Task" ("TaskID") ON DELETE No Action ON UPDATE No Action
-;
 
-ALTER TABLE "Hardware" ADD CONSTRAINT "FK_Hardware_composed of"
-	FOREIGN KEY ("HardwareID") REFERENCES "Hardware" ("HardwareID") ON DELETE No Action ON UPDATE No Action
-;
 
-ALTER TABLE "Project" ADD CONSTRAINT "FK_Project_cordinated by"
-	FOREIGN KEY ("ChefID") REFERENCES "Chef" ("ChefID") ON DELETE No Action ON UPDATE No Action
-;
+ALTER TABLE ONLY public."Company"
+    ADD CONSTRAINT "Company_pkey" PRIMARY KEY (id);
 
-ALTER TABLE "Project" ADD CONSTRAINT "FK_Project_realized for"
-	FOREIGN KEY ("ClientID") REFERENCES "Client" ("ClientID") ON DELETE No Action ON UPDATE No Action
-;
 
-ALTER TABLE "Task" ADD CONSTRAINT "FK_Task_have"
-	FOREIGN KEY ("ProjectID") REFERENCES "Project" ("ProjectID") ON DELETE No Action ON UPDATE No Action
-;
+
+ALTER TABLE ONLY public."DivisionAddress"
+    ADD CONSTRAINT "DivisionAddress_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY public."Division"
+    ADD CONSTRAINT "Division_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY public."Employee"
+    ADD CONSTRAINT "Employee_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY public."Hardware"
+    ADD CONSTRAINT "Hardware_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY public."Project"
+    ADD CONSTRAINT "Project_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY public."Task"
+    ADD CONSTRAINT "Task_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY public."Team"
+    ADD CONSTRAINT "Team_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY public."User"
+    ADD CONSTRAINT "User_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY public."ClientAddress"
+    ADD CONSTRAINT "ClientAddress_clientId_fkey" FOREIGN KEY ("clientId") REFERENCES public."Client"(id);
+
+
+
+ALTER TABLE ONLY public."Division"
+    ADD CONSTRAINT "Division_addresseId_fkey" FOREIGN KEY ("addresseId") REFERENCES public."DivisionAddress"(id) NOT VALID;
+
+
+
+ALTER TABLE ONLY public."Division"
+    ADD CONSTRAINT "Division_companyId_fkey" FOREIGN KEY ("companyId") REFERENCES public."Company"(id) NOT VALID;
+
+
+
+ALTER TABLE ONLY public."EmployeeHardware"
+    ADD CONSTRAINT "EmployeeHardware_employeeId_fkey" FOREIGN KEY ("employeeId") REFERENCES public."Employee"(id);
+
+
+
+ALTER TABLE ONLY public."EmployeeHardware"
+    ADD CONSTRAINT "EmployeeHardware_hardwareId_fkey" FOREIGN KEY ("hardwareId") REFERENCES public."Hardware"(id) NOT VALID;
+
+
+
+ALTER TABLE ONLY public."EmployeeTask"
+    ADD CONSTRAINT "EmployeeTask_employeeId_fkey" FOREIGN KEY ("employeeId") REFERENCES public."Employee"(id) NOT VALID;
+
+
+
+ALTER TABLE ONLY public."EmployeeTask"
+    ADD CONSTRAINT "EmployeeTask_taskId_fkey" FOREIGN KEY ("taskId") REFERENCES public."Task"(id) NOT VALID;
+
+
+
+ALTER TABLE ONLY public."Employee"
+    ADD CONSTRAINT "Employee_divisionId_fkey" FOREIGN KEY ("divisionId") REFERENCES public."Division"(id) NOT VALID;
+
+
+
+ALTER TABLE ONLY public."Employee"
+    ADD CONSTRAINT "Employee_teamId_fkey" FOREIGN KEY ("teamId") REFERENCES public."Team"(id) NOT VALID;
+
+
+
+ALTER TABLE ONLY public."Hardware"
+    ADD CONSTRAINT "Hardware_composedOf_fkey" FOREIGN KEY ("partOf") REFERENCES public."Hardware"(id) NOT VALID;
+
+
+
+ALTER TABLE ONLY public."Task"
+    ADD CONSTRAINT "Task_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES public."Project"(id);
